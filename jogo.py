@@ -51,8 +51,8 @@ def game():
     navePosicaoY = altura*0.8
     movimentoX = 0
     velocidade = 20
-    misselAltura = 250
-    misselLargura = 200
+    misselAltura = 120
+    misselLargura = 110
     misselVelocidade = 3
     misselX = random.randrange(0, largura)
     misselY = -200
