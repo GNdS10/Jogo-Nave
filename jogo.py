@@ -10,6 +10,7 @@ clock = pygame.time.Clock()
 black = (0, 0, 0)
 white = (255, 255, 255)
 pygame.display.set_caption("Nave Asteroides")
+
 nave = pygame.image.load("nave.png")
 larguraNave = 110
 fundo = pygame.image.load("espaco.jpg")
@@ -17,7 +18,6 @@ missel = pygame.image.load("asteroide.png")
 explosaoSound = pygame.mixer.Sound("explosao.mp3")
 misselSound = pygame.mixer.Sound("som ast.mp3")
 misselSound.set_volume(0.2)
-
 def mostraNave(x, y):
     gameDisplay.blit(nave, (x, y))
 def mostraMissel(x, y):
@@ -56,9 +56,7 @@ def game():
     misselY = -200
     desvios = 0
     pygame.mixer.Sound.play(misselSound)
-
-
-while True:
+    while True:
        
         acoes = pygame.event.get()  
        
@@ -66,8 +64,37 @@ while True:
             if acao.type == pygame.QUIT:
                 pygame.quit()
                 quit()
-
+            if acao.type == pygame.KEYDOWN:
+                if acao.key == pygame.K_LEFT:
+                    movimentoX = velocidade*-1
+                elif acao.key == pygame.K_RIGHT:
+                    movimentoX = velocidade
+            if acao.type == pygame.KEYUP:
+                movimentoX = 0
+        
+        gameDisplay.fill(white)
+        gameDisplay.blit(fundo, (1, 1))
+        
+        escreverPlacar(desvios)
+        misselY = misselY + misselVelocidade
+        mostraMissel(misselX, misselY)
+        if misselY > altura:
+            misselY = -200
+            misselX = random.randrange(0, largura)
+            desvios = desvios+1
+            misselVelocidade += 3
+            pygame.mixer.Sound.play(misselSound)
+        navePosicaoX += movimentoX
+        if navePosicaoX < 0:
+            navePosicaoX = 0
+        elif navePosicaoX > largura-larguraNave:
+            navePosicaoX = largura-larguraNave
+        
+        if navePosicaoY < misselY + misselAltura:
+            if navePosicaoX < misselX and navePosicaoX+larguraNave > misselX or misselX+misselLargura > navePosicaoX and misselX+misselLargura < navePosicaoX+larguraNave:
+                dead()
+        
+        mostraNave(navePosicaoX, navePosicaoY)
         pygame.display.update()
         clock.tick(60)  
-
-
+game()
