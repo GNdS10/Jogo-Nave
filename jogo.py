@@ -1,6 +1,8 @@
 import pygame
 import time
 import random
+
+
 pygame.init()
 largura = 800
 altura = 600
@@ -56,6 +58,8 @@ def game():
     misselY = -200
     desvios = 0
     pygame.mixer.Sound.play(misselSound)
+    
+    
     while True:
        
         acoes = pygame.event.get()  
